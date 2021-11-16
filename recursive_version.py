@@ -33,31 +33,31 @@ def insert(x, root):
                 return x
     return root
 
-
-def zip(x, y):
+# input left, and right node, and zip them together.
+def zip_path(x, y):
     if x is None:
         return y
     if y is None:
         return x
     if x.rank < y.rank:
-        y.left = zip(x, y.left)
+        y.left = zip_path(x, y.left)
         return y
     else:
-        x.right = zip(x.right, y)
+        x.right = zip_path(x.right, y)
         return x
 
 
 def delete(x, root):
     if x.key == root.key:
-        return zip(root.left, root.right)
+        return zip_path(root.left, root.right)
     if x.key < root.key:
         if x.key == root.left.key:
-            root.left = zip(root.left.left, root.left.right)
+            root.left = zip_path(root.left.left, root.left.right)
         else:
             delete(x, root.left)
     else:
         if x.key == root.right.key:
-            root.right = zip(root.right.left, root.right.right)
+            root.right = zip_path(root.right.left, root.right.right)
         else:
             delete(x, root.right)
     return root

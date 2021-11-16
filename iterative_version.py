@@ -21,22 +21,26 @@ def insert(x):
     key = node.key
     current = root
     prev = None
-    # find the position of item x to be inserted in the left or right subtree
+
+    # find the position of item x to be inserted in the left or right subtree,
+    # if rank is smaller than current or same rank but key is greater than current
     while current is not None and (rank < current.rank or (rank == current.rank and key > current.key)):
         prev = current
         if key < current.key:
             current = current.left
         else:
             current = current.right
-
-    if current == root:  # the program didn't enter while loop, current is none or item key or rank is greater than root. current didn't change. new item will be root
+    # if root is none, program didnt enter the while loop. otherwise, finds the appropriate position of new item.
+    # current iterate to exact position, prev hold previous current value
+    # if rank is greater than root rank, didn't enter while, current will always be root
+    if current == root:
         root = node
     elif key < prev.key:
         prev.left = node
     else:
         prev.right = node
 
-    if current is None:  # happens for the first item
+    if current is None:
         node.left = None
         node.right = None
         return
@@ -71,17 +75,17 @@ def delete(x):
     global root
     current = root
     prev = None
-    while x != current.key:
+    while x != current.key: # find the x in the tree
         prev = current
         if x < current.key:
             current = current.left
         else:
             current = current.right
-    left = current.left
+    left = current.left  # get the left and right subtree of x
     right = current.right
     if left is None:
         current = right
-    elif right is None:
+    elif right is None: # zipping two path, left and right. if left rank is greater or same, current will be left, else right
         current = left
     elif left.rank >= right.rank:
         current = left
@@ -125,7 +129,9 @@ if __name__ == '__main__':
     print("Items in tree structure: ")
     print2D(root)
     delete(8)
-    print("Items after deletion: ")
-    display(root)
-    print("Items in tree structure: ")
-    print2D(root)
+    delete(5)
+    delete(10)
+    # print("Items after deletion: ")
+    # display(root)
+    # print("Items in tree structure: ")
+    # print2D(root)
